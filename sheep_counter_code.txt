@@ -1,0 +1,50 @@
+int ir_1=4;
+int ir_2=2;
+int led1=8;
+int led2=9;
+int scount=0;
+void setup()
+{
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(ir_1, INPUT);
+  pinMode(ir_2, INPUT);
+  
+  Serial.begin(9600);
+}
+
+void loop(){
+  int valir_1 = digitalRead(ir_1);
+  int valir_2 = digitalRead(ir_2);
+  
+  if(valir_1 == HIGH){
+    Serial.println("First sensor active");
+    digitalWrite(led1,HIGH);
+    delay(2500); // time for sheep to pass + led delay to indicate the trigger
+    digitalWrite(led1,LOW);
+    
+    if(valir_2 == HIGH){
+      scount+=1;
+      Serial.println("Second sensor active, sheep count added");
+      digitalWrite(led2,HIGH);
+      delay(2500); 
+      digitalWrite(led2,LOW);
+    }
+  }
+  
+  if(valir_2 == HIGH){
+    Serial.println("Second sensor active");
+    digitalWrite(led2,HIGH);
+    delay(2500); // time for sheep to pass + led delay to indicate the trigger
+    digitalWrite(led2,LOW);
+    
+    if(valir_1 == HIGH){
+      scount-=1;
+      Serial.println("Second sensor active, sheep count subtracted");
+      digitalWrite(led1,HIGH);
+      delay(2500); 
+      digitalWrite(led1,LOW);
+    }
+  }
+
+}
